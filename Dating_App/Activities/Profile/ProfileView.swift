@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @ObservedObject var users: Users
+    static let tag: String? = "Profile"
     @State private var isEditingProfile = false
-    @State var currentUser: User
     var body: some View {
         VStack {
             Picker(selection: $isEditingProfile, label: Text("Profile View")) {
@@ -22,17 +21,16 @@ struct ProfileView: View {
             .pickerStyle(SegmentedPickerStyle())
 
             if isEditingProfile {
-                EditProfileView(users: users, currentUser: currentUser)
+                EditProfileView()
             } else {
-                PreviewProfileView(user: currentUser)
+                PreviewProfileView()
             }
         }
-
     }
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(users: Users.init(), currentUser: User.example)
+        ProfileView()
     }
 }

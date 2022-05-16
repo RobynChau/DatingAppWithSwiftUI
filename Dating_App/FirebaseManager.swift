@@ -29,4 +29,5 @@ class FirebaseManager: NSObject {
         self.firestore = Firestore.firestore()
         super.init()
     }
+
 }

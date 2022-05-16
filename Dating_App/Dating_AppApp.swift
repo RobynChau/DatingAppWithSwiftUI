@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct Dating_AppApp: App {
+    @StateObject var unlockManager = UnlockManager(currentUser: User.example)
     var body: some Scene {
         WindowGroup {
             LoginView()
+                .environmentObject(unlockManager)
         }
     }
 }

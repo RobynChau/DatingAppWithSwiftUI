@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct PreviewProfileView: View {
-    let user: User
+    @ObservedObject var viewModel = ViewModel()
+    
     @State private var showingMore = false
+
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading) {
                     Group {
-                        if let coverImage = user.coverImage {
+                        if let coverImage = viewModel.currentUser.coverImage {
                             coverImage
                                 .resizable()
                                 .frame(width: 400, height: 300)
@@ -26,35 +28,35 @@ struct PreviewProfileView: View {
                     }
                     VStack(alignment: .leading, spacing: 0) {
                         Group {
-                            Text("\(user.name), \(user.age)")
+                            Text("\(viewModel.currentUser.name), \(viewModel.currentUser.age)")
                                 .font(.title.bold())
                             HStack(alignment: .lastTextBaseline, spacing: 3) {
-                                Text(user.gender)
+                                Text(viewModel.currentUser.genderIdentity)
                                     .font(.title3)
                                     .foregroundColor(.secondary)
-                                Text(user.showingGender ? "" : "(not visible)")
+                                Text(viewModel.currentUser.showingGender ? "" : "(not visible)")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
-                            Text(user.intro ?? "")
+                            Text(viewModel.currentUser.intro ?? "")
                                 .font(.title2)
                                 .foregroundColor(.secondary)
                         }
 
                         VStack(alignment: .leading, spacing: 10) {
-                            ForEach(user.informationList.indices) { index in
+                            ForEach(viewModel.currentUser.informationList.indices, id: \.self) { index in
                                 if index < 4 {
-                                    if let info = user.informationList[index] {
+                                    if let info = viewModel.currentUser.informationList[index] {
                                         Label(info.0, systemImage: info.1)
                                     }
                                 }
                             }
-                            if user.informationList.count >= 4 {
+                            if viewModel.currentUser.informationList.count >= 4 {
                                 Section {
                                     if showingMore {
-                                        ForEach(user.informationList.indices) { index in
+                                        ForEach(viewModel.currentUser.informationList.indices, id: \.self) { index in
                                             if index >= 4 {
-                                                if let info = user.informationList[index] {
+                                                if let info = viewModel.currentUser.informationList[index] {
                                                     Label(info.0, systemImage: info.1)
                                                 }
                                             }
@@ -69,8 +71,8 @@ struct PreviewProfileView: View {
                         .padding(.vertical, 5)
 
                         VStack {
-                            ForEach(user.additionalImages.indices) { index in
-                                if let image = user.additionalImages[index] {
+                            ForEach(viewModel.currentUser.additionalImages.indices, id: \.self) { index in
+                                if let image = viewModel.currentUser.additionalImages[index] {
                                     image
                                         .resizable()
                                         .frame(width: 400, height: 300)
@@ -89,6 +91,6 @@ struct PreviewProfileView: View {
 
 struct PreviewProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        PreviewProfileView(user: User.example)
+        PreviewProfileView()
     }
 }

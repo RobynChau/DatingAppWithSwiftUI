@@ -17,7 +17,7 @@ struct GenderPicker: View {
         Form {
             Section(!isOtherGenders ? "What is your gender?": "What gender do you identify as?") {
                 List {
-                    ForEach(!isOtherGenders ? Constants.genders : Constants.otherGenders, id: \.self) { choice in
+                    ForEach(!isOtherGenders ? Constants.genders : Constants.broadOtherGenders, id: \.self) { choice in
                         Button {
                             gender = choice
                             if !isOtherGenders {

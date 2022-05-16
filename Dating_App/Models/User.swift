@@ -7,23 +7,29 @@
 
 import Foundation
 import SwiftUI
+import FirebaseFirestore
 
-struct User: Codable, Identifiable {
-    var id = UUID()
+struct User: Codable, Identifiable, Equatable {
+    var id: String { uid }
+
     // Basic Information
+    var uid: String
     var name: String
-    var age: Int
-    var height: Int?
-    var gender: String
+    var dateOfBirth: Date
+    var genderIdentity: String // Gender identity of user, includes all types of gender
     var showingGender: Bool = true
     var longitude: Double
     var latitude: Double
     var locationName: String
-    var country: String
+    var countryName: String
+
+    var genderInSearch: String // Gender user represents in searching (Man/Woman)
+    var genderInterestedIn: String // Gender user is interested in (Man/Woman)
 
     // Additional Information
     var intro: String?
-    var lookingFor: [String]?
+    var height: Int?
+    var relationshipTypes: [String]?
     var kidsNumber: Int?
     var smokingHabit: Int?
     var drinkingHabit: Int?
@@ -34,39 +40,27 @@ struct User: Codable, Identifiable {
     var hobbies: [String]?
     var images = [Data?]()
 
-    static var example: User {
-        var user = User(name: "Example User", age: 21, height: 170, gender: "Male", longitude: 0, latitude: 0, locationName: "Example Location", country: "Example Country")
-        for i in 1..<6 {
-            let uiImage = UIImage(named: "person_\(i)")
-            if let data = uiImage!.jpegData(compressionQuality: 0.8) {
-                user.images.append(data)
-            }
-        }
-        return user
-    }
+    // An array of users that User liked or swiped right
+    var like = [Swipe]()
+    // An array of users that liked or swiped right for User
+    var liked = [Swipe]()
+    //An array of users that User passed or swiped left
+    var pass = [Swipe]()
 
-    static var currentUser: User {
-        var user = User(name: "Robyn Chau", age: 21, height: 170, gender: "Man", showingGender: true, longitude: 102, latitude: 103, locationName: "Cupertino", country: "US", intro: "I am Robyn Chau", lookingFor: ["Friendship", "Something Casual"], kidsNumber: 1, smokingHabit: 1, drinkingHabit: 1, religion: 5, educationLevel: 1, universityName: "HCMUS", jobTitle: "Developer")
-        for i in 1..<10 {
-            if let uiImage = UIImage(named: "person_\(i)") {
-                if let data = uiImage.jpegData(compressionQuality: 0.8) {
-                    user.images.append(data)
-                } else {
-                    user.images.append(nil)
-                }
-            } else {
-                user.images.append(nil)
-            }
-        }
-        return user
+    // Match Array
+
+    var fullVersionUnlocked: Bool = false
+
+    var age: Int {
+        return Calendar.current.dateComponents([.year], from: dateOfBirth, to: Date()).year!
     }
 
     var informationList: [(String, String)?] {
         var info = [(String, String)?]()
-        if let lookingFor = lookingFor {
+        if let lookingFor = relationshipTypes {
             info.append(("Looking for \(lookingFor.joined(separator: ", ").lowercased())", Constants.icons["lookingFor"]!))
         }
-        info.append(("Located \(locationName), \(country)", Constants.icons["location"]!))
+        info.append(("Located \(locationName), \(countryName)", Constants.icons["location"]!))
         if let height = height {
             info.append(("\(height) cm", Constants.icons["height"]!))
         }
@@ -128,24 +122,96 @@ struct User: Codable, Identifiable {
         }
         return uiImages
     }
-}
 
-class Users: ObservableObject {
-    @Published var users = [User]() {
-        didSet {
-            let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(users) {
-                UserDefaults.standard.set(encoded, forKey: "Users")
+    var wrappedIntro: String {
+        intro ?? ""
+    }
+    var wrappedHeight: Int {
+        height ?? 0
+    }
+    var wrappedRelationshipTypes: [String] {
+        relationshipTypes ?? []
+    }
+    var wrappedKidsNumber: Int {
+        kidsNumber ?? 0
+    }
+    var wrappedSmokingHabit: Int {
+        smokingHabit ?? 0
+    }
+    var wrappedDrinkingHabit: Int {
+        drinkingHabit ?? 0
+    }
+    var wrappedReligion: Int {
+        religion ?? 0
+    }
+    var wrappedEducationLevel: Int {
+        educationLevel ?? 0
+    }
+    var wrappedUniversityName: String {
+        universityName ?? ""
+    }
+
+    var wrappedJobTitle: String {
+        jobTitle ?? ""
+    }
+    var wrappedHobbies: [String] {
+        hobbies ?? []
+    }
+
+    var match: [Swipe] {
+        return like.filter { swipe1 in
+            liked.contains { swipe2 in
+                swipe1.id == swipe2.id
             }
         }
     }
+}
+
+extension User {
+    static var example: User {
+        let user = User(uid: "", name: "", dateOfBirth: Date(), genderIdentity: "", longitude: 0, latitude: 0, locationName: "", countryName: "", genderInSearch: "", genderInterestedIn: "")
+        return user
+    }
+
+    init(data: [String: Any]) {
+        self.uid = data["uid"] as! String
+        self.name = data["name"] as! String
+        self.dateOfBirth = (data["dateOfBirth"] as! Timestamp).dateValue()
+        self.genderIdentity = data["genderIdentity"] as! String
+        self.showingGender = data["showingGender"] as! Bool
+        self.longitude = data["longitude"] as! Double
+        self.latitude = data["latitude"] as! Double
+        self.locationName = data["locationName"] as! String
+        self.countryName = data["countryName"] as! String
+        self.genderInSearch = data["genderInSearch"] as! String
+        self.genderInterestedIn = data["genderInterestedIn"] as! String
+        self.intro = data["intro"] as! String?
+        self.height = data["height"] as! Int?
+        self.relationshipTypes = data["relationshipTypes"] as! [String]?
+        self.kidsNumber = data["kidsNumber"] as! Int?
+        self.smokingHabit = data["smokingHabit"] as! Int?
+        self.drinkingHabit = data["drinkingHabit"] as! Int?
+        self.religion = data["religion"] as! Int?
+        self.educationLevel = data["educationLevel"] as! Int?
+        self.universityName = data["universityName"] as! String?
+        self.jobTitle = data["jobTitle"] as! String?
+        self.hobbies = data["hobbies"] as! [String]?
+        self.images = data["images"] as! [Data?]
+    }
+}
+
+class Users: ObservableObject {
+    @Published var users = [User]()
+    
     init() {
-        if let data = UserDefaults.standard.data(forKey: "Users") {
-            if let decoded = try? JSONDecoder().decode([User].self, from: data) {
-                users = decoded
-                return
+        FirebaseManager.shared.firestore.collection("users").getDocuments { querySnapshot, error in
+            if let error = error {
+                fatalError(error.localizedDescription)
+            } else {
+                for document in querySnapshot!.documents {
+                    self.users.append(User(data: document.data()))
+                }
             }
         }
-        users = []
     }
 }

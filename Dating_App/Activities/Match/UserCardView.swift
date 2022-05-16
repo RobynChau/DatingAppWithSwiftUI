@@ -3,7 +3,7 @@ import SwiftUI
 struct UserCardView: View {
     let user: User
 
-    var removal: (() -> Void)? = nil
+    var removal: ((_ isCorrect: Bool) -> Void)?
 
     @State private var offset = CGSize.zero
     @State private var showingImage = false
@@ -80,10 +80,10 @@ struct UserCardView: View {
                 .onEnded { _ in
                     if abs(offset.width) > 100 {
                         if offset.width < 0 {
-                            removal?()
                         }
+                        removal?(offset.width > 0)
                     } else {
-                            offset = .zero
+                        offset = .zero
                     }
                 }
         )
@@ -102,7 +102,7 @@ struct UserCardView: View {
                             Text("\(user.name), \(user.age)")
                                 .font(.title.bold())
                             HStack(alignment: .lastTextBaseline, spacing: 3) {
-                                Text(user.gender)
+                                Text(user.genderIdentity)
                                     .font(.title3)
                                     .foregroundColor(.secondary)
                                 Text(user.showingGender ? "" : "(not visible)")
@@ -115,7 +115,7 @@ struct UserCardView: View {
                         }
 
                         VStack(alignment: .leading, spacing: 10) {
-                            ForEach(user.informationList.indices) { index in
+                            ForEach(user.informationList.indices, id: \.self) { index in
                                 if index < 4 {
                                     if let info = user.informationList[index] {
                                         Label(info.0, systemImage: info.1)
@@ -125,7 +125,7 @@ struct UserCardView: View {
                             if user.informationList.count >= 4 {
                                 Section {
                                     if showingMore {
-                                        ForEach(user.informationList.indices) { index in
+                                        ForEach(user.informationList.indices, id: \.self) { index in
                                             if index >= 4 {
                                                 if let info = user.informationList[index] {
                                                     Label(info.0, systemImage: info.1)
@@ -142,7 +142,7 @@ struct UserCardView: View {
                         .padding(.vertical, 5)
 
                         VStack {
-                            ForEach(user.additionalImages.indices) { index in
+                            ForEach(user.additionalImages.indices, id: \.self) { index in
                                 if let image = user.additionalImages[index] {
                                         image
                                             .resizable()

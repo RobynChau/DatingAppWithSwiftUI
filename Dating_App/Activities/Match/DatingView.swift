@@ -15,31 +15,34 @@ extension View {
 }
 
 struct DatingView: View {
-    @ObservedObject var allUsers: Users
+    static let tag: String? = "Dating"
+    @ObservedObject var viewModel = ViewModel()
 
     var body: some View {
         ZStack {
             VStack {
                 ZStack(alignment: .bottom) {
-                    ForEach(0..<allUsers.users.count, id: \.self) { index in
-                        UserCardView(user: allUsers.users[index]) {
+                    ForEach(0..<viewModel.filterUsers.count, id: \.self) { index in
+                        UserCardView(user: viewModel.filterUsers[index]) { isCorrect in
+                            if isCorrect {
+                                viewModel.handledLikeAction(index: index)
+                            } else {
+                                viewModel.handledPassAction(index: index)
+                            }
                             withAnimation {
-                                removeCard(at: index)
+                                viewModel.removeCard(at: index)
                             }
                         }
-                        .stacked(at: index, in: allUsers.users.count)
+                        .stacked(at: index, in: viewModel.allUsers.users.count)
                     }
                 }
             }
         }
     }
-    func removeCard(at index: Int) {
-        allUsers.users.remove(at: index)
-    }
 }
 
 struct DatingView_Previews: PreviewProvider {
     static var previews: some View {
-        DatingView(allUsers: Users.init())
+        DatingView()
     }
 }

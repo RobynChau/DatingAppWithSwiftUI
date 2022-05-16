@@ -14,7 +14,6 @@ struct Constants {
     static let relationshipTypes = ["Chatting", "Friendship", "Something Casual", "Long-term Relationship", "Prefer Not to Say"]
     static let genders = ["Woman", "Man"]
     static let broadOtherGenders = ["Agender", "Androgyne", "Androgynous", "Bigender", "Cis", "Cisgender", "Cis Female", "Cis Male", "Cis Man", "Cis Woman", "Cisgender Female", "Cisgender Male", "Cisgender Man", "Cisgender Woman", "Female to Male", "FTM", "Gender Fluid", "Gender Nonconforming", "Gender Questioning", "Gender Variant", "Genderqueer", "Intersex", "Male to Female", "MTF", "Neither", "Neutrois", "Non-binary", "Other", "Pangender", "Trans", "Trans*", "Trans Female", "Trans* Female", "Trans Male", "Trans* Male", "Trans Man", "Trans* Man", "Trans Person", "Trans* Person", "Trans Woman", "Trans* Woman", "Transfeminine", "Transgender", "Transgender Female", "Transgender Male", "Transgender Man", "Transgender Person", "Transgender Woman", "Transmasculine", "Transsexual", "Transsexual Female", "Transsexual Male", "Transsexual Man", "Transsexual Person", "Transsexual Woman", "Two-Spirit"]
-    static let otherGenders = ["Cis Woman", "Trans Woman", "Cis Man", "Trans Man", "Non-Binary Person"]
     static let religions = ["", "Agnostic", "Atheist", "Buddhist", "Catholic", "Christian", "Hindu", "Jewish", "Muslim", "Sikh", "Spiritual", "Other", "Prefer Not to Say"]
     static let educationLevels = ["High School Diploma", "College Degree", "Grad School Degree", "Prefer Not to Say"]
     static let icons = [
@@ -30,6 +29,14 @@ struct Constants {
         "kids": "person.badge.plus",
         "smoking": "flame",
         "drinking": "cup.and.saucer",
-        "religion": "lightbulb"
+        "religion": "lightbulb",
+        "signout": "rectangle.portrait.and.arrow.right",
+        "aboutus": "person.2.crop.square.stack",
+        "personalsettings": "person.crop.rectangle",
+        "home": "house",
+        "dating": "sparkle.magnifyingglass",
+        "profile": "square.and.pencil",
+        "settings": "gear",
+        "back": "chevron.backward"
     ]
 }

@@ -12,19 +12,19 @@ enum Field: Hashable {
 }
 
 struct LoginView: View {
+    @EnvironmentObject var unlockManager: UnlockManager
+
     @FocusState private var focusedField: Field?
     @State private var isLoginMode = false
     @State private var email = ""
     @State private var password = ""
+    @State private var uid = ""
 
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMessage = ""
 
-    @State private var showingSignUpView = false
-    @State private var showingHomeScreen = false
-
-    @State private var currentUser = User(name: "", age: 0, gender: "", longitude: 0, latitude: 0, locationName: "", country: "")
+    @ObservedObject var viewModel = ViewModel()
 
     var body: some View {
         NavigationView {
@@ -44,8 +44,6 @@ struct LoginView: View {
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
                             .focused($focusedField, equals: .email)
-                            //.border(Color.red,
-                                    //width: (focusedField == .email && !validEmail() ? 2 : 0))
                         SecureField("Password", text: $password)
                             .focused($focusedField, equals: .password)
                     }
@@ -67,24 +65,19 @@ struct LoginView: View {
                 }
             }
             .navigationTitle(isLoginMode ? "Login" : "Create Account")
-            .alert(isPresented: $showingAlert) {
-                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .cancel())
+            .alert(isPresented: $viewModel.showingAlert) {
+                Alert(title: Text(viewModel.alertTitle), message: Text(viewModel.alertMessage), dismissButton: .cancel())
             }
-            .sheet(isPresented: $showingSignUpView) {
-                SignUpView(email: email, password: "\(password)")
+            .sheet(isPresented: $viewModel.showingSignUpView) {
+                SignUpView()
             }
-            .fullScreenCover(isPresented: $showingHomeScreen) {
-                MainTabView(currentUser: $currentUser)
+            .fullScreenCover(isPresented: $viewModel.isUserCurrentlyLoggedIn, onDismiss: nil) {
+                MainTabView()
             }
             .onChange(of: isLoginMode) { _ in
                 email = ""
                 password = ""
                 focusedField = nil
-            }
-            .toolbar {
-                Button("Print") {
-                    print(currentUser)
-                }
             }
         }
     }
@@ -98,20 +91,10 @@ struct LoginView: View {
             return
         }
         if isLoginMode {
-            handleLogin()
+            viewModel.loginUser(email: email, password: password, unlockManger: unlockManager)
         } else {
-            handleSignUp()
+            viewModel.createUser(email: email, password: password)
         }
-    }
-
-    func handleLogin() {
-        loginUser()
-        showingHomeScreen = true
-    }
-
-    func handleSignUp() {
-        createUser()
-        showingSignUpView = true
     }
 
     func validEmail() -> Bool {
@@ -121,52 +104,12 @@ struct LoginView: View {
             options: .regularExpression
         ) != nil
     }
-
-    private func loginUser() {
-        FirebaseManager.shared.auth.signIn(withEmail: email, password: password) { result, error in
-            if let error = error {
-                alertTitle = "Failed to log in."
-                alertMessage = error.localizedDescription
-                showingAlert.toggle()
-                return
-            }
-
-        }
-        fetchCurrentUser()
-    }
-
-    func fetchCurrentUser() {
-
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
-
-        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument(as: User.self) { result in
-            switch result {
-            case .success(let retrieved):
-                currentUser = retrieved
-            case.failure(let error):
-                alertTitle = "Failed to get fetch current user"
-                alertMessage = "\(error.localizedDescription)"
-                showingAlert = true
-            }
-
-        }
-    }
-
-    private func createUser() {
-        FirebaseManager.shared.auth.createUser(withEmail: email, password: password) { result, error in
-            if let error = error {
-                alertTitle = "Failed to create account."
-                alertMessage = error.localizedDescription
-                showingAlert = true
-                return
-            }
-        }
-    }
 }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+            .environmentObject(UnlockManager(currentUser: User.example))
     }
 }
 

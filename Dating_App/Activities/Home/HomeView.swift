@@ -8,60 +8,44 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State var showMenu = false
-    @ObservedObject var users: Users
-    var body: some View {
-        let drag = DragGesture()
-            .onEnded {
-                if $0.translation.width > 20 {
-                    withAnimation {
-                        self.showMenu = false
-                    }
-                }
-            }
-        return NavigationView {
-            GeometryReader { geometry in
-                ZStack(alignment: .trailing) {
-                    VStack {
-                        Text("Hello World")
-                        Text("Hello world")
-                        Text("Hello world")
-                        Text("Hello world")
-                        Text("Hello world")
-                        Text("Hello world")
+    static let tag: String? = "Home"
+    @State private var showingSettings = false
+    @Binding var tabSelection: String?
+    @ObservedObject var viewModel = ViewModel()
 
+    var body: some View {
+        NavigationView {
+            List {
+                Section {
+                    MiniDatingView(user: User.example)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                Section("More to Explore") {
+                    NavigationLink {
+                        MatchView(currentUser: viewModel.currentUser)
+                    } label: {
+                        Label("Matches", systemImage: "person.wave.2")
                     }
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                    //.offset(x: self.showMenu ? -geometry.size.width/2 : 0)
-                    .onTapGesture {
-                        if showMenu {
-                            showMenu.toggle()
-                        }
+                    NavigationLink {
+                        LikedYouView(currentUser: viewModel.currentUser)
+                    } label: {
+                        Label("Liked You", systemImage: "person.wave.2")
                     }
-                    if self.showMenu {
-                        MenuView()
-                            .frame(width: geometry.size.width / 2.5)
-                            .transition(.move(edge: .trailing))
+                    NavigationLink {
+                        SecondLookView(currentUser: viewModel.currentUser)
+                    } label: {
+                        Label("Second Look", systemImage: "person.wave.2")
                     }
                 }
-                .gesture(drag)
             }
-            .toolbar {
-                Button {
-                    withAnimation(.linear) {
-                        self.showMenu.toggle()
-                    }
-                } label: {
-                    Label("Side Menu", systemImage: "person.crop.circle")
-                        .font(.title2)
-                }
-            }
+            .navigationTitle("Home")
         }
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(users: Users())
+        HomeView(tabSelection: .constant("Home"))
+            .environmentObject(Users.init())
     }
 }
