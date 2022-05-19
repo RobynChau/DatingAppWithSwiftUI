@@ -37,6 +37,15 @@ struct Constants {
         "dating": "sparkle.magnifyingglass",
         "profile": "square.and.pencil",
         "settings": "gear",
-        "back": "chevron.backward"
+        "back": "chevron.backward",
+        
+    ]
+    static let advancedFilterOptions = [
+        "Education Level": "educationLevels",
+        "Drinking Habit": "drinkingOptions",
+        "Smoking Habit": "smokingOptions",
+        "Looking For": "relationshipTypes",
+        "Kids": "kidsOptions",
+        "Religion": "religions",
     ]
 }

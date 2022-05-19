@@ -32,7 +32,7 @@ struct MainTabView: View {
             MainSettingsView()
                 .tag(MainSettingsView.tag)
                 .tabItem {
-                    Image(systemName: Constants.icons["gear"]!)
+                    Image(systemName: Constants.icons["settings"]!)
                     Text("Settings")
                 }
         }

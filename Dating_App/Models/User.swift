@@ -172,32 +172,6 @@ extension User {
         let user = User(uid: "", name: "", dateOfBirth: Date(), genderIdentity: "", longitude: 0, latitude: 0, locationName: "", countryName: "", genderInSearch: "", genderInterestedIn: "")
         return user
     }
-
-    init(data: [String: Any]) {
-        self.uid = data["uid"] as! String
-        self.name = data["name"] as! String
-        self.dateOfBirth = (data["dateOfBirth"] as! Timestamp).dateValue()
-        self.genderIdentity = data["genderIdentity"] as! String
-        self.showingGender = data["showingGender"] as! Bool
-        self.longitude = data["longitude"] as! Double
-        self.latitude = data["latitude"] as! Double
-        self.locationName = data["locationName"] as! String
-        self.countryName = data["countryName"] as! String
-        self.genderInSearch = data["genderInSearch"] as! String
-        self.genderInterestedIn = data["genderInterestedIn"] as! String
-        self.intro = data["intro"] as! String?
-        self.height = data["height"] as! Int?
-        self.relationshipTypes = data["relationshipTypes"] as! [String]?
-        self.kidsNumber = data["kidsNumber"] as! Int?
-        self.smokingHabit = data["smokingHabit"] as! Int?
-        self.drinkingHabit = data["drinkingHabit"] as! Int?
-        self.religion = data["religion"] as! Int?
-        self.educationLevel = data["educationLevel"] as! Int?
-        self.universityName = data["universityName"] as! String?
-        self.jobTitle = data["jobTitle"] as! String?
-        self.hobbies = data["hobbies"] as! [String]?
-        self.images = data["images"] as! [Data?]
-    }
 }
 
 class Users: ObservableObject {
@@ -209,7 +183,9 @@ class Users: ObservableObject {
                 fatalError(error.localizedDescription)
             } else {
                 for document in querySnapshot!.documents {
-                    self.users.append(User(data: document.data()))
+                    let userBuilderShop = UserBuilderShop()
+                    let userBuilder = UserBuilder()
+                    self.users.append(userBuilderShop.createUserFromData(using: userBuilder, data: document.data()))
                 }
             }
         }

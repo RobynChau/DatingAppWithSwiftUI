@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct SecondLookView: View {
-    @State var currentUser: User
+    @StateObject var viewModel = ViewModel()
+
     var body: some View {
         List {
-            ForEach(currentUser.pass, id: \.id) { match in
+            ForEach(viewModel.currentUser.pass, id: \.id) { match in
                 VStack {
                     Text(match.id)
                 }
+            }
+            .refreshable {
+                viewModel.fetchCurrentUser()
             }
         }
         .navigationTitle("Second Look")
@@ -23,6 +27,6 @@ struct SecondLookView: View {
 
 struct SecondLookView_Previews: PreviewProvider {
     static var previews: some View {
-        SecondLookView(currentUser: User.example)
+        SecondLookView()
     }
 }

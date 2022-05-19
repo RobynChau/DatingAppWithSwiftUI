@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var unlockManager: UnlockManager
-    @ObservedObject var viewModel = ViewModel()
-
+    @ObservedObject var viewModel = SettingsView.ViewModel()
 
     let advancedFilterOptions = ["kidsOptions", "smokingOptions", "drinkingOptions", "relationshipTypes", "religions", "educationLevels", "jobTitle", ]
 
-    @State private var showingUnlockScreen = false
     static let tag: String? = "Settings"
     var body: some View {
-        NavigationView {
             List {
                 Section("Filter") {
                     VStack(alignment: .leading) {
@@ -49,8 +45,21 @@ struct SettingsView: View {
                         .pickerStyle(.segmented)
                     }
                 }
+
+                Section("Dating Location") {
+                    Button {
+                        Task {
+                            viewModel.locationFetcher.start()
+                            await viewModel.convertLocation()
+                            print(viewModel.currentUser.locationName)
+                        }
+                    } label: {
+                        Label("\(viewModel.currentUser.locationName), \(viewModel.currentUser.countryName)", systemImage: "arrow.clockwise")
+                    }
+                }
+
                 Section("Advanced Filter") {
-                    if unlockManager.currentUser.fullVersionUnlocked {
+                    if viewModel.currentUser.fullVersionUnlocked {
                         ForEach(0..<10) { number in
                             HStack {
                                 Text("Filter \(number)")
@@ -64,44 +73,35 @@ struct SettingsView: View {
                         }
                     } else {
                         Button {
-                            showingUnlockScreen = true
+                            viewModel.showingUnlockScreen = true
                         } label: {
                             Label("Unlock full features", systemImage: "lock")
                         }
                     }
                 }
-                Button {
+                Button(role: .destructive) {
                     viewModel.deleteUser()
                 } label: {
                     Label("Delete Account", systemImage: "xmark.bin")
-                }
-                .sheet(isPresented: $showingUnlockScreen) {
-                    UnlockView()
+                        .foregroundColor(.red)
                 }
             }
             .navigationTitle("Settings")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Label("Back", systemImage: "chevron.backward")
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-
-                    }
+                Button("Save") {
+                    viewModel.save()
                 }
             }
             .fullScreenCover(isPresented: $viewModel.showingLogInView) {
                 LoginView()
             }
+            .sheet(isPresented: $viewModel.showingUnlockScreen) {
+                UnlockView()
+            }
         }
-    }
 }
 
-struct SettingView_Previews: PreviewProvider {
+struct DraftSettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
             .environmentObject(UnlockManager(currentUser: User.example))

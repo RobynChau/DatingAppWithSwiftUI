@@ -26,8 +26,6 @@ extension LoginView {
                 self.isUserCurrentlyLoggedIn = FirebaseManager.shared.auth.currentUser?.uid != nil
             }
 
-            print("Hello \(isUserCurrentlyLoggedIn)")
-
             initCurrentUser()
         }
 

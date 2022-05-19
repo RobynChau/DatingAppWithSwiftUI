@@ -74,6 +74,7 @@ struct LoginView: View {
             .fullScreenCover(isPresented: $viewModel.isUserCurrentlyLoggedIn, onDismiss: nil) {
                 MainTabView()
             }
+
             .onChange(of: isLoginMode) { _ in
                 email = ""
                 password = ""

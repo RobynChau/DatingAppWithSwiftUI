@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct LikedYouView: View {
-    @State var currentUser: User
+    @StateObject var viewModel = ViewModel()
     var body: some View {
         List {
-            ForEach(currentUser.liked, id: \.id) { match in
+            ForEach(viewModel.currentUser.liked, id: \.id) { match in
                 VStack {
                     Text(match.id)
                 }
@@ -23,6 +23,6 @@ struct LikedYouView: View {
 
 struct LikedYouView_Previews: PreviewProvider {
     static var previews: some View {
-        LikedYouView(currentUser: User.example)
+        LikedYouView()
     }
 }

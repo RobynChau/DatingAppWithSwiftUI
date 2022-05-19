@@ -19,22 +19,26 @@ struct HomeView: View {
                 Section {
                     MiniDatingView(user: User.example)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .onTapGesture {
+                            tabSelection = DatingView.tag
+                        }
                 }
+
                 Section("More to Explore") {
                     NavigationLink {
                         MatchView(currentUser: viewModel.currentUser)
                     } label: {
-                        Label("Matches", systemImage: "person.wave.2")
+                        Label("Matches", systemImage: "heart")
                     }
                     NavigationLink {
-                        LikedYouView(currentUser: viewModel.currentUser)
+                        LikedYouView()
                     } label: {
                         Label("Liked You", systemImage: "person.wave.2")
                     }
                     NavigationLink {
-                        SecondLookView(currentUser: viewModel.currentUser)
+                        SecondLookView()
                     } label: {
-                        Label("Second Look", systemImage: "person.wave.2")
+                        Label("Second Look", systemImage: "arrow.clockwise.heart")
                     }
                 }
             }
@@ -46,6 +50,5 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(tabSelection: .constant("Home"))
-            .environmentObject(Users.init())
     }
 }

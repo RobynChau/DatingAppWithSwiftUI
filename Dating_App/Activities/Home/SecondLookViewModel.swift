@@ -1,23 +1,18 @@
 //
-//  HomeViewModel.swift
+//  SecondLookViewModel.swift
 //  Dating_App
 //
-//  Created by Robyn Chau on 16/05/2022.
+//  Created by Robyn Chau on 19/05/2022.
 //
 
 import Foundation
 
-extension HomeView {
+extension SecondLookView {
     class ViewModel: ObservableObject {
         @Published var currentUser = User.example
-        @Published var allUsers = Users()
 
         init() {
             fetchCurrentUser()
-        }
-
-        var filterUsers: [User] {
-            allUsers.users
         }
 
         func fetchCurrentUser() {

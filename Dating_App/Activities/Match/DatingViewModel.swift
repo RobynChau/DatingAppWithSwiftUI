@@ -58,7 +58,9 @@ extension DatingView {
                             fatalError("There are 2 users with the same uid")
                         }
                         for document in querySnapshot!.documents {
-                            var likedUser = User(data: document.data())
+                            let userBuilderShop = UserBuilderShop()
+                            let userBuilder = UserBuilder()
+                            var likedUser = userBuilderShop.createUserFromData(using: userBuilder, data: document.data())
                             likedUser.liked.append(Swipe(id: self.currentUser!.uid, timestamp: Date()))
                             try! FirebaseManager.shared.firestore.collection("users").document(likedUser.uid).setData(from: likedUser, merge: false)
                         }

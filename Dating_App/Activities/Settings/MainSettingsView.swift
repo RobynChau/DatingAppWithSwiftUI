@@ -12,19 +12,20 @@ struct MainSettingsView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showingSettingsView = false
     @State private var showingSignInView = false
+    @State private var showingLogInView = false
+    @ObservedObject var viewModel = ViewModel()
 
     var body: some View {
         NavigationView {
             List {
                 Section {
-                    Button {
-                        //
+                    NavigationLink {
+                        AboutUsView()
                     } label: {
                         Label("About Us", systemImage: Constants.icons["aboutus"]!)
                     }
-
-                    Button {
-                        showingSettingsView = true
+                    NavigationLink {
+                        SettingsView()
                     } label: {
                         Label("Personal Settings", systemImage: Constants.icons["personalsettings"]!)
                     }
@@ -33,7 +34,7 @@ struct MainSettingsView: View {
                 Section {
                     Button {
                         try! FirebaseManager.shared.auth.signOut()
-                        dismiss()
+                        showingLogInView = true
                     } label: {
                         Label("Sign Out", systemImage: Constants.icons["signout"]!)
                     }
@@ -44,6 +45,9 @@ struct MainSettingsView: View {
             .fullScreenCover(isPresented: $showingSettingsView) {
                 SettingsView()
             }
+            .fullScreenCover(isPresented: $showingLogInView) {
+                LoginView()
+            }
         }
     }
 }
@@ -51,5 +55,6 @@ struct MainSettingsView: View {
 struct MainSettingsView_Previews: PreviewProvider {
     static var previews: some View {
         MainSettingsView()
+            .environmentObject(UnlockManager.init(currentUser: User.example))
     }
 }

@@ -10,7 +10,8 @@ import Foundation
 
 extension MainSettingsView {
     class ViewModel: ObservableObject {
-        init() { }
+        init() {
+        }
 
         func signOut() {
             try! FirebaseManager.shared.auth.signOut()
