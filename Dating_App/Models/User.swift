@@ -169,7 +169,7 @@ struct User: Codable, Identifiable, Equatable {
 
 extension User {
     static var example: User {
-        let user = User(uid: "", name: "", dateOfBirth: Date(), genderIdentity: "", longitude: 0, latitude: 0, locationName: "", countryName: "", genderInSearch: "", genderInterestedIn: "")
+        let user = User(uid: "", name: "Robyn Chau", dateOfBirth: Date(), genderIdentity: "Male", longitude: 0, latitude: 0, locationName: "", countryName: "", genderInSearch: "", genderInterestedIn: "", fullVersionUnlocked: false)
         return user
     }
 }
@@ -191,3 +191,4 @@ class Users: ObservableObject {
         }
     }
 }
+

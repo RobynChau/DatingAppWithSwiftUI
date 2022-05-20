@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var showingSettings = false
     @Binding var tabSelection: String?
     @ObservedObject var viewModel = ViewModel()
+    let allUsers = Users()
 
     var body: some View {
         NavigationView {

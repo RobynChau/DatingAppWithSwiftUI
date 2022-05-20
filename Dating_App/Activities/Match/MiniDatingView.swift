@@ -12,17 +12,17 @@ struct MiniDatingView: View {
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            Image(uiImage: UIImage(named: "person_1")!)
+            Image(uiImage: (user.uiImages.first ?? UIImage(named: "timcook")!) ?? UIImage(named: "timcook")!)
                 .resizable()
                 .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
             VStack(alignment: .leading) {
                 Spacer()
                 VStack(alignment: .leading) {
-                    Text("\(user.name), \(user.age)")
+                    Text("\(user.name), 21")
                         .font(.title3.bold())
-                    Text(user.jobTitle ?? "")
+                    Text(user.jobTitle ?? "Cheery Developer")
                         .font(.caption)
-                    Text(user.intro ?? "")
+                    Text(user.intro ?? "Hello there! Welcome to Cherry")
                 }
                 .padding(8)
                 .foregroundColor(.white)

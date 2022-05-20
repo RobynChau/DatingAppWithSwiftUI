@@ -10,6 +10,7 @@
 		D9076D30283492A2004DB46C /* AboutUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9076D2F283492A2004DB46C /* AboutUsView.swift */; };
 		D9076D3228349617004DB46C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9076D3128349617004DB46C /* SettingsView.swift */; };
 		D90F6A8C28282BAC00210447 /* MiniDatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90F6A8B28282BAC00210447 /* MiniDatingView.swift */; };
+		D9140D0228369DB200B6A00A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9140D0128369DB200B6A00A /* LaunchScreen.storyboard */; };
 		D922AE852836364000B46E6E /* SecondLookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D922AE842836364000B46E6E /* SecondLookViewModel.swift */; };
 		D92616932812861400ADB530 /* AdvancedFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92616922812861400ADB530 /* AdvancedFilters.swift */; };
 		D9389DEC28362FE500D66C29 /* UserBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9389DEB28362FE500D66C29 /* UserBuilder.swift */; };
@@ -79,6 +80,7 @@
 		D9076D2F283492A2004DB46C /* AboutUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsView.swift; sourceTree = "<group>"; };
 		D9076D3128349617004DB46C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D90F6A8B28282BAC00210447 /* MiniDatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniDatingView.swift; sourceTree = "<group>"; };
+		D9140D0128369DB200B6A00A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D922AE842836364000B46E6E /* SecondLookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondLookViewModel.swift; sourceTree = "<group>"; };
 		D92616922812861400ADB530 /* AdvancedFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedFilters.swift; sourceTree = "<group>"; };
 		D9389DEB28362FE500D66C29 /* UserBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBuilder.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 		D98F998C27F93E74002162B6 /* Dating_App */ = {
 			isa = PBXGroup;
 			children = (
+				D9140D0128369DB200B6A00A /* LaunchScreen.storyboard */,
 				D9C6FF0F27FEC94C0002F92D /* Models */,
 				D9C6FF0B27FEC64E0002F92D /* Activities */,
 				D9C6FEEE27FD354D0002F92D /* Extensions */,
@@ -394,6 +397,7 @@
 				D970700E27FC005700A1E4D9 /* Occupations.json in Resources */,
 				D98F999527F93E76002162B6 /* Preview Assets.xcassets in Resources */,
 				D98F999227F93E76002162B6 /* Assets.xcassets in Resources */,
+				D9140D0228369DB200B6A00A /* LaunchScreen.storyboard in Resources */,
 				D966AA1F27FB47EF00A45DC7 /* Universities.json in Resources */,
 				D992CB0F2806AC6B008DB49A /* GoogleService-Info.plist in Resources */,
 			);
@@ -594,6 +598,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -602,7 +607,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.RobynChau.Dating-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Dating_App;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -624,6 +629,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -632,7 +638,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.RobynChau.Dating-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Dating_App;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

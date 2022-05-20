@@ -159,9 +159,9 @@ struct UserCardView: View {
     
     func getBackgroundColor(offset: CGSize) -> Color {
         if offset.width > 0 {
-            return .green.opacity(0.1)
+            return .green.opacity(0.2)
         } else if offset.width < 0 {
-            return .pink.opacity(0.1)
+            return .pink.opacity(0.2)
         } else {
             return .white.opacity(0.05)
         }

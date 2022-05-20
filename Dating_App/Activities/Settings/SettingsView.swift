@@ -9,9 +9,9 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var unlockManager: UnlockManager
-    @ObservedObject var viewModel = SettingsView.ViewModel()
+    @ObservedObject var viewModel = ViewModel()
 
-    let advancedFilterOptions = ["kidsOptions", "smokingOptions", "drinkingOptions", "relationshipTypes", "religions", "educationLevels", "jobTitle", ]
+    let advancedFilters = ["Height", "Education Level", "Looking For", "Kids", "Drinking Habit", "Smoking Habit", "Religion"]
 
     static let tag: String? = "Settings"
     var body: some View {
@@ -20,7 +20,6 @@ struct SettingsView: View {
                     VStack(alignment: .leading) {
                         Text("Show me in searches for")
                             .font(.subheadline)
-                        //.foregroundColor(.secondary)
                         Picker("Show me in searches for...", selection: $viewModel.currentUser.genderInSearch) {
                             Text("Women")
                                 .tag("Women")
@@ -33,7 +32,6 @@ struct SettingsView: View {
                     VStack(alignment: .leading) {
                         Text("I'm interested in...")
                             .font(.subheadline)
-                        //.foregroundColor(.secondary)
                         Picker("I'm interested in...", selection: $viewModel.currentUser.genderInterestedIn) {
                             Text("Women")
                                 .tag("Women")
@@ -48,11 +46,6 @@ struct SettingsView: View {
 
                 Section("Dating Location") {
                     Button {
-                        Task {
-                            viewModel.locationFetcher.start()
-                            await viewModel.convertLocation()
-                            print(viewModel.currentUser.locationName)
-                        }
                     } label: {
                         Label("\(viewModel.currentUser.locationName), \(viewModel.currentUser.countryName)", systemImage: "arrow.clockwise")
                     }
@@ -60,9 +53,9 @@ struct SettingsView: View {
 
                 Section("Advanced Filter") {
                     if viewModel.currentUser.fullVersionUnlocked {
-                        ForEach(0..<10) { number in
+                        ForEach(advancedFilters, id: \.self) { filter in
                             HStack {
-                                Text("Filter \(number)")
+                                Text(filter)
                                 Spacer()
                                 Button {
 
@@ -79,6 +72,7 @@ struct SettingsView: View {
                         }
                     }
                 }
+
                 Button(role: .destructive) {
                     viewModel.deleteUser()
                 } label: {

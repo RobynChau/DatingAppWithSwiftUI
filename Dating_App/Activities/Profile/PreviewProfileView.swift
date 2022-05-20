@@ -85,6 +85,7 @@ struct PreviewProfileView: View {
             }
             .navigationTitle("Profile Preview")
         }
+        .onlyStackNavigationView()
     }
 
 }
